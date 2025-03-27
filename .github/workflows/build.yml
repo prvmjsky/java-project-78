@@ -23,7 +23,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: app/gradlew build
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
