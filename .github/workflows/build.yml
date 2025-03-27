@@ -18,6 +18,12 @@ jobs:
         with:
           java-version: 21
           distribution: 'temurin' # Alternative distribution options are available
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          fetch-depth: 0
+      - name: Execute Gradle build
+        run: ./gradlew build
       - name: Cache SonarQube packages
         uses: actions/cache@v4
         with:
@@ -33,4 +39,4 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: app/gradlew build sonar --info
+        run: app/gradlew sonar --info
