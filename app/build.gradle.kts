@@ -3,6 +3,7 @@ plugins {
     checkstyle
     jacoco
     id("org.sonarqube") version "6.0.1.5171"
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 group = "hexlet.code"
