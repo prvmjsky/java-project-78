@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestValidator {
+class TestValidator {
     private static String shortString;
     private static String longString;
     private static String emptyString;
@@ -17,7 +17,7 @@ public class TestValidator {
     private Schema schema;
 
     @BeforeAll
-    public static void setUp() {
+    static void setUp() {
         shortString = "text";
         longString = "another text 123";
         emptyString = "";
@@ -25,20 +25,20 @@ public class TestValidator {
     }
 
     @BeforeEach
-    public void setValidator() {
+    void setValidator() {
         var validator = new Validator();
         schema = validator.string();
     }
 
     @Test
-    public void testDefault() {
+    void testDefault() {
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(emptyString));
         assertTrue(schema.isValid(nullString));
     }
 
     @Test
-    public void testRequired() {
+    void testRequired() {
         schema.required();
         assertTrue(schema.isValid(shortString));
         assertFalse(schema.isValid(emptyString));
@@ -51,12 +51,12 @@ public class TestValidator {
     }
 
     @Test
-    public void testMinLength() {
+    void testMinLength() {
 
     }
 
     @Test
-    public void testContains() {
+    void testContains() {
 
     }
 }
