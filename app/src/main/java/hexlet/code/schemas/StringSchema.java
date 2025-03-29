@@ -31,7 +31,12 @@ public class StringSchema implements Schema {
         minLengthRequired = true;
     }
 
-    public void contains(String string) {
+    public void contains(String string) throws IllegalArgumentException {
+
+        if (string == null) {
+            throw new IllegalArgumentException("required content cannot be null");
+        }
+
         content = string;
         contentRequired = true;
 
@@ -40,14 +45,15 @@ public class StringSchema implements Schema {
         }
     }
 
-    private static boolean isNullOrEmpty(String string) {
-        return string == null || string.isEmpty();
-    }
-
     @Override
     public boolean isValid(String string) {
 
-        if (isRequired && isNullOrEmpty(string)) {
+        if (string == null
+            && (isRequired || minLengthRequired || contentRequired)) {
+            return false;
+        }
+
+        if (isRequired && string.isEmpty()) {
             return false;
         }
 
