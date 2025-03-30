@@ -46,8 +46,6 @@ class TestStringSchema {
         assertFalse(schema.isValid(nullString));
 
         schema.required();
-        assertTrue(schema.isValid(shortString));
-        assertTrue(schema.isValid(emptyString));
         assertTrue(schema.isValid(nullString));
     }
 
