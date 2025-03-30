@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class TestStringValidator {
+class TestStringSchema {
     private static String shortString;
     private static String longString;
     private static String emptyString;
@@ -26,7 +26,7 @@ class TestStringValidator {
     }
 
     @BeforeEach
-    void setValidator() {
+    void setSchema() {
         var validator = new Validator();
         schema = validator.string();
     }

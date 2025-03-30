@@ -1,6 +1,6 @@
 package hexlet.code.schemas;
 
-public class StringSchema implements Schema {
+public class StringSchema extends BaseSchema<String> {
     private boolean isRequired;
     private boolean minLengthRequired;
     private boolean contentRequired;
@@ -17,31 +17,31 @@ public class StringSchema implements Schema {
         content = "";
     }
 
+    public void minLength(int minLength) {
+        this.minLength = minLength;
+        minLengthRequired = true;
+    }
+
+    public void contains(String content) throws IllegalArgumentException {
+
+        if (content == null) {
+            throw new IllegalArgumentException("required content cannot be null");
+        }
+
+        this.content = content;
+        contentRequired = true;
+
+        if (this.content.isEmpty() && isRequired) {
+            isRequired = false;
+        }
+    }
+
     @Override
     public void required() {
         isRequired = !isRequired;
 
         if (isRequired && content.isEmpty()) {
             contentRequired = false;
-        }
-    }
-
-    public void minLength(int number) {
-        minLength = number;
-        minLengthRequired = true;
-    }
-
-    public void contains(String string) throws IllegalArgumentException {
-
-        if (string == null) {
-            throw new IllegalArgumentException("required content cannot be null");
-        }
-
-        content = string;
-        contentRequired = true;
-
-        if (content.isEmpty() && isRequired) {
-            isRequired = false;
         }
     }
 
