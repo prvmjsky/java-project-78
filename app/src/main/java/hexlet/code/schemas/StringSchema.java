@@ -17,18 +17,18 @@ public class StringSchema extends BaseSchema<String> {
         content = "";
     }
 
-    public void minLength(int minLength) {
-        this.minLength = minLength;
+    public void minLength(int number) {
+        this.minLength = number;
         minLengthRequired = true;
     }
 
-    public void contains(String content) throws IllegalArgumentException {
+    public void contains(String string) throws IllegalArgumentException {
 
-        if (content == null) {
+        if (string == null) {
             throw new IllegalArgumentException("required content cannot be null");
         }
 
-        this.content = content;
+        this.content = string;
         contentRequired = true;
 
         if (this.content.isEmpty() && isRequired) {

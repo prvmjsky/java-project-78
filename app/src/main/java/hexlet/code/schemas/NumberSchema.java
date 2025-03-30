@@ -5,8 +5,8 @@ public class NumberSchema extends BaseSchema<Integer> {
     private boolean positivityRequired;
     private boolean rangeRequired;
 
-    private Integer min;
-    private Integer max;
+    private Integer minRange;
+    private Integer maxRange;
 
     public NumberSchema() {
         isRequired = false;
@@ -19,8 +19,8 @@ public class NumberSchema extends BaseSchema<Integer> {
     }
 
     public void range(int min, int max) {
-        this.min = min;
-        this.max = max;
+        this.minRange = min;
+        this.maxRange = max;
         rangeRequired = true;
     }
 
@@ -40,7 +40,7 @@ public class NumberSchema extends BaseSchema<Integer> {
             return false;
         }
 
-        if (rangeRequired && (number < min || number > max)) {
+        if (rangeRequired && (number < minRange || number > maxRange)) {
             return false;
         }
 
