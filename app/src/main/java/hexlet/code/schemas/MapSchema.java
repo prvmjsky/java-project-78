@@ -7,6 +7,7 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
     private boolean sizeRequired;
 
     private Integer size;
+    private Map<String, BaseSchema<?>> schemas;
 
     public MapSchema() {
         isRequired = false;
@@ -26,6 +27,12 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
 
     public MapSchema required() {
         isRequired = true;
+
+        return this;
+    }
+
+    public MapSchema shape(Map<String, BaseSchema<?>> map) {
+        this.schemas = map;
 
         return this;
     }
