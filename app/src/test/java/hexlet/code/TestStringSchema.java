@@ -17,7 +17,7 @@ class TestStringSchema {
     private static StringSchema schema;
 
     @BeforeAll
-    static void setUp() {
+    static void setFixtures() {
         emptyString = "";
         shortString = "text";
         longString = "another text 123";

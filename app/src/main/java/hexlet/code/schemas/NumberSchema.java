@@ -14,19 +14,24 @@ public class NumberSchema extends BaseSchema<Integer> {
         rangeRequired = false;
     }
 
-    public void positive() {
+    public NumberSchema positive() {
         positivityRequired = true;
+
+        return this;
     }
 
-    public void range(int min, int max) {
+    public NumberSchema range(int min, int max) {
         this.minRange = min;
         this.maxRange = max;
         rangeRequired = true;
+
+        return this;
     }
 
-    @Override
-    public void required() {
+    public NumberSchema required() {
         isRequired = true;
+
+        return this;
     }
 
     @Override

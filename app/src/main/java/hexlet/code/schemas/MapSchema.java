@@ -13,18 +13,21 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
         sizeRequired = false;
     }
 
-    public void sizeof(int number) {
+    public MapSchema sizeof(int number) {
         if (number < 0) {
             throw new IllegalArgumentException("size cannot be less than 0");
         }
 
         this.size = number;
         sizeRequired = true;
+
+        return this;
     }
 
-    @Override
-    public void required() {
+    public MapSchema required() {
         isRequired = true;
+
+        return this;
     }
 
     @Override

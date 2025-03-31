@@ -14,12 +14,14 @@ public class StringSchema extends BaseSchema<String> {
         contentRequired = false;
     }
 
-    public void minLength(int number) {
+    public StringSchema minLength(int number) {
         this.minLength = number;
         minLengthRequired = true;
+
+        return this;
     }
 
-    public void contains(String string) throws IllegalArgumentException {
+    public StringSchema contains(String string) throws IllegalArgumentException {
 
         if (string == null) {
             throw new IllegalArgumentException("required content cannot be null");
@@ -27,11 +29,14 @@ public class StringSchema extends BaseSchema<String> {
 
         this.content = string;
         contentRequired = true;
+
+        return this;
     }
 
-    @Override
-    public void required() {
+    public StringSchema required() {
         isRequired = true;
+
+        return this;
     }
 
     @Override
