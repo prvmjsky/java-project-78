@@ -15,7 +15,7 @@ public class NumberSchema extends BaseSchema<Integer> {
     }
 
     public void positive() {
-        positivityRequired = !positivityRequired;
+        positivityRequired = true;
     }
 
     public void range(int min, int max) {
@@ -26,14 +26,13 @@ public class NumberSchema extends BaseSchema<Integer> {
 
     @Override
     public void required() {
-        isRequired = !isRequired;
+        isRequired = true;
     }
 
     @Override
     public boolean isValid(Integer number) {
-        if (number == null
-            && (isRequired || positivityRequired || rangeRequired)) {
-            return false;
+        if (number == null) {
+            return !isRequired;
         }
 
         if (positivityRequired && number < 1) {

@@ -31,36 +31,29 @@ public class TestNumberSchema {
         assertTrue(schema.isValid(0));
         assertTrue(schema.isValid(-1));
         assertTrue(schema.isValid(1));
-
-        schema.required();
-        assertTrue(schema.isValid(null));
     }
 
     @Test
     void testPositive() {
         schema.positive();
-        assertFalse(schema.isValid(null));
+        assertTrue(schema.isValid(null));
         assertFalse(schema.isValid(0));
         assertFalse(schema.isValid(-1));
         assertTrue(schema.isValid(1));
-
-        schema.positive();
-        assertTrue(schema.isValid(null));
-        assertTrue(schema.isValid(0));
-        assertTrue(schema.isValid(-1));
     }
 
     @Test
     void testRange() {
         schema.range(-1, 3);
-        assertFalse(schema.isValid(null));
+        assertTrue(schema.isValid(null));
         assertTrue(schema.isValid(0));
         assertTrue(schema.isValid(-1));
         assertFalse(schema.isValid(4));
     }
 
     @Test
-    void testPositiveInRange() {
+    void testMixed() {
+        schema.required();
         schema.positive();
         schema.range(-1, 3);
         assertFalse(schema.isValid(null));
