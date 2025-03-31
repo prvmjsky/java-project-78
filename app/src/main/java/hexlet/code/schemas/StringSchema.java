@@ -5,16 +5,13 @@ public class StringSchema extends BaseSchema<String> {
     private boolean minLengthRequired;
     private boolean contentRequired;
 
-    private int minLength;
+    private Integer minLength;
     private String content;
 
     public StringSchema() {
         isRequired = false;
         minLengthRequired = false;
         contentRequired = false;
-
-        minLength = 0;
-        content = "";
     }
 
     public void minLength(int number) {
@@ -30,27 +27,18 @@ public class StringSchema extends BaseSchema<String> {
 
         this.content = string;
         contentRequired = true;
-
-        if (this.content.isEmpty() && isRequired) {
-            isRequired = false;
-        }
     }
 
     @Override
     public void required() {
-        isRequired = !isRequired;
-
-        if (isRequired && content.isEmpty()) {
-            contentRequired = false;
-        }
+        isRequired = true;
     }
 
     @Override
     public boolean isValid(String string) {
 
-        if (string == null
-            && (isRequired || minLengthRequired || contentRequired)) {
-            return false;
+        if (string == null) {
+            return !isRequired;
         }
 
         if (isRequired && string.isEmpty()) {

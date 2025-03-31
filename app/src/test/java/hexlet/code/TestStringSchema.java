@@ -10,17 +10,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class TestStringSchema {
+    private static String emptyString;
     private static String shortString;
     private static String longString;
-    private static String emptyString;
 
     private static StringSchema schema;
 
     @BeforeAll
     static void setUp() {
+        emptyString = "";
         shortString = "text";
         longString = "another text 123";
-        emptyString = "";
     }
 
     @BeforeEach
@@ -31,35 +31,32 @@ class TestStringSchema {
 
     @Test
     void testDefault() {
-        assertTrue(schema.isValid(shortString));
-        assertTrue(schema.isValid(emptyString));
         assertTrue(schema.isValid(null));
+        assertTrue(schema.isValid(emptyString));
+        assertTrue(schema.isValid(shortString));
     }
 
     @Test
     void testRequired() {
         schema.required();
-        assertTrue(schema.isValid(shortString));
-        assertFalse(schema.isValid(emptyString));
         assertFalse(schema.isValid(null));
-
-        schema.required();
-        assertTrue(schema.isValid(null));
+        assertFalse(schema.isValid(emptyString));
+        assertTrue(schema.isValid(shortString));
     }
 
     @Test
     void testMinLength() {
         schema.minLength(0);
+        assertTrue(schema.isValid(null));
+        assertTrue(schema.isValid(emptyString));
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
-        assertTrue(schema.isValid(emptyString));
-        assertFalse(schema.isValid(null));
 
         schema.minLength(5);
+        assertTrue(schema.isValid(null));
+        assertFalse(schema.isValid(emptyString));
         assertFalse(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
-        assertFalse(schema.isValid(emptyString));
-        assertFalse(schema.isValid(null));
     }
 
     @Test
@@ -67,31 +64,33 @@ class TestStringSchema {
         assertThrows(IllegalArgumentException.class, () -> schema.contains(null));
 
         schema.contains("");
+        assertTrue(schema.isValid(null));
+        assertTrue(schema.isValid(emptyString));
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
-        assertTrue(schema.isValid(emptyString));
-        assertFalse(schema.isValid(null));
 
         schema.contains("text");
+        assertTrue(schema.isValid(null));
+        assertFalse(schema.isValid(emptyString));
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
-        assertFalse(schema.isValid(emptyString));
-        assertFalse(schema.isValid(null));
 
         schema.contains(" ");
+        assertTrue(schema.isValid(null));
+        assertFalse(schema.isValid(emptyString));
         assertFalse(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
-        assertFalse(schema.isValid(emptyString));
-        assertFalse(schema.isValid(null));
     }
 
     @Test
-    void testContainsWithRequired() {
-        schema.contains("");
-        schema.required();
-        assertFalse(schema.isValid(emptyString));
+    void testContainsWithMinLength() {
+        schema.contains("text");
+        schema.minLength(4);
+        assertTrue(schema.isValid(shortString));
+        assertTrue(schema.isValid(longString));
 
-        schema.contains("");
-        assertTrue(schema.isValid(emptyString));
+        schema.minLength(5);
+        assertFalse(schema.isValid(shortString));
+        assertTrue(schema.isValid(longString));
     }
 }
