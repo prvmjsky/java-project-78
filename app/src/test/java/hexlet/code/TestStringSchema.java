@@ -13,7 +13,6 @@ class TestStringSchema {
     private static String shortString;
     private static String longString;
     private static String emptyString;
-    private static String nullString;
 
     private static StringSchema schema;
 
@@ -22,7 +21,6 @@ class TestStringSchema {
         shortString = "text";
         longString = "another text 123";
         emptyString = "";
-        nullString = null;
     }
 
     @BeforeEach
@@ -35,7 +33,7 @@ class TestStringSchema {
     void testDefault() {
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(emptyString));
-        assertTrue(schema.isValid(nullString));
+        assertTrue(schema.isValid(null));
     }
 
     @Test
@@ -43,10 +41,10 @@ class TestStringSchema {
         schema.required();
         assertTrue(schema.isValid(shortString));
         assertFalse(schema.isValid(emptyString));
-        assertFalse(schema.isValid(nullString));
+        assertFalse(schema.isValid(null));
 
         schema.required();
-        assertTrue(schema.isValid(nullString));
+        assertTrue(schema.isValid(null));
     }
 
     @Test
@@ -55,13 +53,13 @@ class TestStringSchema {
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
         assertTrue(schema.isValid(emptyString));
-        assertFalse(schema.isValid(nullString));
+        assertFalse(schema.isValid(null));
 
         schema.minLength(5);
         assertFalse(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
         assertFalse(schema.isValid(emptyString));
-        assertFalse(schema.isValid(nullString));
+        assertFalse(schema.isValid(null));
     }
 
     @Test
@@ -72,19 +70,19 @@ class TestStringSchema {
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
         assertTrue(schema.isValid(emptyString));
-        assertFalse(schema.isValid(nullString));
+        assertFalse(schema.isValid(null));
 
         schema.contains("text");
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
         assertFalse(schema.isValid(emptyString));
-        assertFalse(schema.isValid(nullString));
+        assertFalse(schema.isValid(null));
 
         schema.contains(" ");
         assertFalse(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
         assertFalse(schema.isValid(emptyString));
-        assertFalse(schema.isValid(nullString));
+        assertFalse(schema.isValid(null));
     }
 
     @Test
