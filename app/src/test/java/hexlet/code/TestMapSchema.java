@@ -45,9 +45,6 @@ public class TestMapSchema {
         assertFalse(schema.isValid(null));
         assertTrue(schema.isValid(emptyMap));
         assertTrue(schema.isValid(smallMap));
-
-        schema.required();
-        assertTrue(schema.isValid(null));
     }
 
     @Test
@@ -55,11 +52,12 @@ public class TestMapSchema {
         assertThrows(IllegalArgumentException.class, () -> schema.sizeof(-1));
 
         schema.sizeof(0);
-        assertFalse(schema.isValid(null));
+        assertTrue(schema.isValid(null));
         assertTrue(schema.isValid(emptyMap));
         assertFalse(schema.isValid(smallMap));
 
         schema.sizeof(2);
+        assertTrue(schema.isValid(null));
         assertFalse(schema.isValid(emptyMap));
         assertTrue(schema.isValid(smallMap));
 

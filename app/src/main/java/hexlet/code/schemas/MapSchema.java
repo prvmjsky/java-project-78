@@ -24,14 +24,13 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
 
     @Override
     public void required() {
-        isRequired = !isRequired;
+        isRequired = true;
     }
 
     @Override
     public boolean isValid(Map<?, ?> map) {
-        if (map == null
-            && (isRequired || sizeRequired)) {
-            return false;
+        if (map == null) {
+            return !isRequired;
         }
 
         if (sizeRequired && (map.size() != size)) {
