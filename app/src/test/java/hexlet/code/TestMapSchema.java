@@ -14,9 +14,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestMapSchema {
-    private static Map<Object, Object> emptyMap;
-    private static Map<String, Number> smallMap;
-    private static Map<String, Number> bigMap;
+    private static Map<String, Object> emptyMap;
+    private static Map<String, String> smallMap;
+    private static Map<String, Integer> bigMap;
 
     private Validator validator;
     private MapSchema schema;
@@ -25,7 +25,7 @@ public class TestMapSchema {
     @BeforeAll
     static void setFixtures() {
         emptyMap = Map.of();
-        smallMap = Map.of("one", 1, "two", 2);
+        smallMap = Map.of("one", "1", "two", "2");
         bigMap = Map.of("one", 1, "two", 2, "three", 3, "four", 4);
     }
 

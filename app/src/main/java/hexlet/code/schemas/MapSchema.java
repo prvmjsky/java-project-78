@@ -2,13 +2,13 @@ package hexlet.code.schemas;
 
 import java.util.Map;
 
-public class MapSchema<K, V> extends BaseSchema<Map<K, V>> {
+public class MapSchema extends BaseSchema<Map<String, ?>> {
     private boolean isRequired;
     private boolean sizeRequired;
     private boolean schemasProvided;
 
     private Integer size;
-    private Map<K, BaseSchema<V>> schemas;
+    private Map<String, ? extends BaseSchema<?>> schemas;
 
     public MapSchema() {
         isRequired = false;
@@ -16,7 +16,7 @@ public class MapSchema<K, V> extends BaseSchema<Map<K, V>> {
         schemasProvided = false;
     }
 
-    public MapSchema<K, V> sizeof(int number) {
+    public MapSchema sizeof(int number) {
         if (number < 0) {
             throw new IllegalArgumentException("size cannot be less than 0");
         }
@@ -27,13 +27,13 @@ public class MapSchema<K, V> extends BaseSchema<Map<K, V>> {
         return this;
     }
 
-    public MapSchema<K, V> required() {
+    public MapSchema required() {
         isRequired = true;
 
         return this;
     }
 
-    public MapSchema<K, V> shape(Map<K, BaseSchema<V>> map) {
+    public MapSchema shape(Map<String, ? extends BaseSchema<?>> map) {
         if (map == null) {
             throw new IllegalArgumentException("schemas cannot be null");
         }
@@ -45,7 +45,7 @@ public class MapSchema<K, V> extends BaseSchema<Map<K, V>> {
     }
 
     @Override
-    public boolean isValid(Map<K, V> map) {
+    public boolean isValid(Map<String, ?> map) {
         if (map == null) {
             return !isRequired;
         }

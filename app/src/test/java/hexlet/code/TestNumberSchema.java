@@ -53,9 +53,7 @@ public class TestNumberSchema {
 
     @Test
     void testMixed() {
-        schema.required();
-        schema.positive();
-        schema.range(-1, 3);
+        schema.required().positive().range(-1, 3);
         assertFalse(schema.isValid(null));
         assertFalse(schema.isValid(0));
         assertFalse(schema.isValid(-1));
