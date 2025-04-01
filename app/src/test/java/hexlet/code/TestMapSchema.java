@@ -104,7 +104,7 @@ public class TestMapSchema {
 
     @Test
     void testMapShape() {
-        schemas.put("map1", validator.map().sizeof(1));
+        schemas.put("map1", validator.map().required().sizeof(1));
         schemas.put("map2", validator.map().sizeof(2));
         schema.shape(schemas);
 
@@ -122,7 +122,7 @@ public class TestMapSchema {
 
     @Test
     void testComplexShape() {
-        Map<String, BaseSchema<?>> numberSchema = Map.of("num", validator.number().positive());
+        Map<String, BaseSchema<Integer>> numberSchema = Map.of("num", validator.number().positive());
         schemas.put("map1", validator.map().shape(numberSchema));
         schema.shape(schemas);
 
