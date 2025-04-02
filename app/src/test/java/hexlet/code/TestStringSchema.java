@@ -84,8 +84,7 @@ class TestStringSchema {
 
     @Test
     void testContainsWithMinLength() {
-        schema.contains("text");
-        schema.minLength(4);
+        schema.contains("text").minLength(4);
         assertTrue(schema.isValid(shortString));
         assertTrue(schema.isValid(longString));
 
