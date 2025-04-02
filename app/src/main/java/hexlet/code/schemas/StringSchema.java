@@ -3,7 +3,7 @@ package hexlet.code.schemas;
 public class StringSchema extends BaseSchema<String> {
 
     public StringSchema minLength(int number) {
-        addCheck("minLength", str -> str.length() < number);
+        addCheck("minLength", str -> str.length() >= number);
 
         return this;
     }
@@ -14,7 +14,7 @@ public class StringSchema extends BaseSchema<String> {
             throw new IllegalArgumentException("required content cannot be null");
         }
 
-        addCheck("contains", str -> !str.contains(content));
+        addCheck("contains", str -> str.contains(content));
 
         return this;
     }
