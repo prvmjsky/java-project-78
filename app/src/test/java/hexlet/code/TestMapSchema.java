@@ -19,8 +19,7 @@ public class TestMapSchema {
     private static Map<String, Number> bigMap;
 
     private Validator validator;
-    private MapSchema<Number> schema;
-    private Map<String, BaseSchema<?>> schemas;
+    private MapSchema schema;
 
     @BeforeAll
     static void setFixtures() {
@@ -33,7 +32,6 @@ public class TestMapSchema {
     void setValidationTools() {
         validator = new Validator();
         schema = validator.map();
-        schemas = new HashMap<>();
     }
 
     @Test
@@ -73,14 +71,14 @@ public class TestMapSchema {
 
     @Test
     void testStringShape() {
-        var schema1 = validator.map();
         Map<String, BaseSchema<String>> schemas1 = new HashMap<>();
         schemas1.put("str1", validator.string().required().minLength(6).contains("ring"));
         schemas1.put("str2", validator.string().required().minLength(1));
-        schema1.shape(schemas1);
+        schemas1.put("noSuchStringSoCorrect", validator.string().required());
+        var schema1 = validator.map().shape(schemas1);
 
         Map<String, String> correct = Map.of("str1", "string", "str2", "spring");
-        Map<String, String> incorrect = Map.of("str1", "string", "str2", " ");
+        Map<String, String> incorrect = Map.of("str1", "string", "str2", "");
 
         assertTrue(schema1.isValid(correct));
         assertFalse(schema1.isValid(incorrect));
@@ -88,12 +86,11 @@ public class TestMapSchema {
 
     @Test
     void testNumberShape() {
-        var schema1 = new MapSchema<Integer>();
         Map<String, BaseSchema<Integer>> schemas1 = new HashMap<>();
 
         schemas1.put("num1", validator.number().positive());
         schemas1.put("num2", validator.number().required().positive().range(-1, 1));
-        schema1.shape(schemas1);
+        var schema1 = validator.map().shape(schemas1);
 
         Map<String, Integer> correct = new HashMap<>();
         correct.put("num1", null);
@@ -109,12 +106,11 @@ public class TestMapSchema {
 
     @Test
     void testMapShape() {
-        var schema1 = new MapSchema<Map<String, Number>>();
-        Map<String, MapSchema<Map<String, Number>>> schemas1 = new HashMap<>();
+        Map<String, BaseSchema<Map<?, ?>>> schemas1 = new HashMap<>();
 
         schemas1.put("map1", validator.map().required().sizeof(1));
         schemas1.put("map2", validator.map().sizeof(2));
-        schema1.shape(schemas1);
+        var schema1 = validator.map().shape(schemas1);
 
         Map<String, Map<String, Number>> correct = new HashMap<>();
         correct.put("map1", Map.of("str1", 1));
@@ -124,15 +120,17 @@ public class TestMapSchema {
         incorrect.put("map1", Map.of("str1", 1));
         incorrect.put("map2", Map.of("str1", 1));
 
-        assertTrue(schema.isValid(correct));
-        assertFalse(schema.isValid(incorrect));
+        assertTrue(schema1.isValid(correct));
+        assertFalse(schema1.isValid(incorrect));
     }
 
     @Test
-    void testComplexShape() {
-        Map<String, BaseSchema<Integer>> numberSchema = Map.of("num", validator.number().positive());
-        schemas.put("map1", validator.map().shape(numberSchema));
-        schema.shape(schemas);
+    void testNestedShape() {
+        Map<String, BaseSchema<Map<?, ?>>> schemas1 = new HashMap<>();
+        Map<String, BaseSchema<Integer>> numberSchemas = Map.of("num", validator.number().required().positive());
+
+        schemas1.put("map1", validator.map().shape(numberSchemas));
+        var schema1 = validator.map().shape(schemas1);
 
         Map<String, Map<String, Number>> correct = new HashMap<>();
         correct.put("map1", Map.of("num", 1));
@@ -142,7 +140,7 @@ public class TestMapSchema {
         incorrect.put("map1", Map.of("num", -1));
         incorrect.put("map2", Map.of());
 
-        assertTrue(schema.isValid(correct));
-        assertFalse(schema.isValid(incorrect));
+        assertTrue(schema1.isValid(correct));
+        assertFalse(schema1.isValid(incorrect));
     }
 }

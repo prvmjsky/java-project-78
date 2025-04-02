@@ -27,19 +27,12 @@ public class MapSchema extends BaseSchema<Map<?, ?>> {
             throw new IllegalArgumentException("schemas cannot be null");
         }
 
-        Predicate<Map<?, ?>> shapeCheck = (map) -> {
-            try {
-                return schemas.keySet().stream()
-                    .filter(map::containsKey)
-                    .allMatch(key -> schemas.get(key).isValid((T) map.get(key)));
-            } catch (ClassCastException | NullPointerException e) {
-                throw e;
-            }
-        };
+        Predicate<Map<?, ?>> shapeCheck = (map) -> schemas.keySet().stream()
+            .filter(map::containsKey)
+            .allMatch(key -> schemas.get(key).isValid((T) map.get(key)));
 
         addCheck("shape", shapeCheck);
 
         return this;
-    }
     }
 }
