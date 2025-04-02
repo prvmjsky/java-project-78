@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 public class BaseSchema<T> {
+
     private Map<String, Predicate<T>> checks = new HashMap<>();
 
     void addCheck(String name, Predicate<T> check) {
@@ -13,8 +14,8 @@ public class BaseSchema<T> {
     }
 
     public boolean isValid(T item) {
-        if (item == null && !checks.containsKey("required")) {
-            return true;
+        if (item == null) {
+            return !checks.containsKey("required");
         }
 
         return checks.values().stream()
