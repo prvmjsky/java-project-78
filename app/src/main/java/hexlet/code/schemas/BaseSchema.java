@@ -9,11 +9,11 @@ public class BaseSchema<T> {
 
     private Map<String, Predicate<T>> checks = new HashMap<>();
 
-    void addCheck(String name, Predicate<T> check) {
+    final void addCheck(String name, Predicate<T> check) {
         this.checks.put(name, check);
     }
 
-    public boolean isValid(T item) {
+    public final boolean isValid(T item) {
         if (item == null) {
             return !checks.containsKey("required");
         }
