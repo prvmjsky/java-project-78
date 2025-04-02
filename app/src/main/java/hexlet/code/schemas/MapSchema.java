@@ -1,70 +1,45 @@
 package hexlet.code.schemas;
 
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
 
-public class MapSchema extends BaseSchema<Map<String, ?>> {
-    private boolean isRequired;
-    private boolean sizeRequired;
-    private boolean schemasProvided;
+public class MapSchema extends BaseSchema<Map<?, ?>> {
 
-    private Integer size;
-    private Map<String, BaseSchema<?>> schemas;
+    public MapSchema required() {
+        addCheck("required", Objects::nonNull);
 
-    public MapSchema() {
-        isRequired = false;
-        sizeRequired = false;
-        schemasProvided = false;
+        return this;
     }
 
-    public MapSchema sizeof(int number) {
-        if (number < 0) {
+    public MapSchema sizeof(int size) {
+        if (size < 0) {
             throw new IllegalArgumentException("size cannot be less than 0");
         }
 
-        this.size = number;
-        sizeRequired = true;
+        addCheck("sizeof", map -> map.size() == size);
 
         return this;
     }
 
-    public MapSchema required() {
-        isRequired = true;
-
-        return this;
-    }
-
-    public MapSchema shape(Map<String, BaseSchema<?>> map) {
-        if (map == null) {
+    public <T> MapSchema shape(Map<?, BaseSchema<T>> schemas) {
+        if (schemas == null) {
             throw new IllegalArgumentException("schemas cannot be null");
         }
 
+        Predicate<Map<?, ?>> shapeCheck = (map) -> {
+            try {
+                return schemas.keySet().stream()
+                    .filter(map::containsKey)
+                    .allMatch(key -> schemas.get(key).isValid((T) map.get(key)));
+            } catch (ClassCastException | NullPointerException e) {
+                throw e;
+            }
+        };
 
-        this.schemas = map;
-        schemasProvided = true;
+        addCheck("shape", shapeCheck);
 
         return this;
     }
-
-    @Override
-    public boolean isValid(Map<String, ?> map) {
-        if (map == null) {
-            return !isRequired;
-        }
-
-        if (sizeRequired && (map.size() != size)) {
-            return false;
-        }
-
-        if (schemasProvided) {
-            var isAllValid = schemas.keySet().stream()
-                .filter(map::containsKey)
-                .allMatch(key -> schemas.get(key).isValid(map.get(key)));
-
-            if (!isAllValid) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
