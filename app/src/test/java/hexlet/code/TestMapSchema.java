@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class TestMapSchema {
+class TestMapSchema {
     private static Map<String, Number> emptyMap;
     private static Map<String, Number> smallMap;
     private static Map<String, Number> bigMap;
