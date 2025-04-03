@@ -1,5 +1,5 @@
 plugins {
-    application
+    java
     checkstyle
     jacoco
     id("org.sonarqube") version "6.1.0.5360"
@@ -31,10 +31,6 @@ sonar {
         property("sonar.organization", "prvmjsky")
         property("sonar.host.url", "https://sonarcloud.io")
     }
-}
-
-application {
-    mainClass = "hexlet.code.App"
 }
 
 tasks.jacocoTestReport {

@@ -46,8 +46,10 @@ class TestNumberSchema {
     void testRange() {
         schema.range(-1, 3);
         assertTrue(schema.isValid(null));
-        assertTrue(schema.isValid(0));
+        assertFalse(schema.isValid(-4));
         assertTrue(schema.isValid(-1));
+        assertTrue(schema.isValid(0));
+        assertTrue(schema.isValid(3));
         assertFalse(schema.isValid(4));
     }
 
