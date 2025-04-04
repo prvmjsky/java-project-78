@@ -29,7 +29,13 @@ public final class MapSchema extends BaseSchema<Map<?, ?>> {
 
         Predicate<Map<?, ?>> shapeCheck = (map) -> schemas.keySet().stream()
             .filter(map::containsKey)
-            .allMatch(key -> schemas.get(key).isValid((T) map.get(key)));
+            .allMatch(key -> {
+                try {
+                    return schemas.get(key).isValid((T) map.get(key));
+                } catch (ClassCastException | NullPointerException e) {
+                    return false;
+                }
+            });
 
         addCheck("shape", shapeCheck);
 
